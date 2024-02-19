@@ -25,7 +25,7 @@ export class BookmarkService {
     });
   }
 
-  //create bookmark
+  // Create bookmark
   async createBookmark(userId: number, dto: CreateBookmarkDto) {
     const bookmark = await this.prisma.bookmark.create({
       data: {
@@ -33,24 +33,22 @@ export class BookmarkService {
         ...dto,
       },
     });
-    return bookmark;
+    return { message: 'Bookmark created successfully', data: bookmark };
   }
 
-  //edit bookmark
+  // Edit bookmark
   async editBookmarksById(
     userId: number,
     bookmarkId: number,
     dto: EditBookmarkDto,
   ) {
-    //get the bookmark by id
     const bookmark = await this.prisma.bookmark.findUnique({
       where: { id: bookmarkId },
     });
-    //check if user owns the id
     if (!bookmark || bookmark.userId !== userId) {
       throw new ForbiddenException('Access to resource denied');
     }
-    return this.prisma.bookmark.update({
+    const updatedBookmark = await this.prisma.bookmark.update({
       where: {
         id: bookmarkId,
       },
@@ -58,9 +56,10 @@ export class BookmarkService {
         ...dto,
       },
     });
+    return { message: 'Bookmark updated successfully', data: updatedBookmark };
   }
 
-  //delete bookmark
+  // Delete bookmark
   async deleteBookmarksById(userId: number, bookmarkId: number) {
     //get the bookmark by id
     const bookmark = await this.prisma.bookmark.findUnique({
@@ -75,5 +74,6 @@ export class BookmarkService {
         id: bookmarkId,
       },
     });
+    return { message: 'Bookmark deleted successfully' };
   }
 }
