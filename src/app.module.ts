@@ -7,6 +7,8 @@ import { BookmarkModule } from './bookmark/bookmark.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
